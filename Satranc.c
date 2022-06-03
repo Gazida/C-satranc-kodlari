@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// 1. oyuncu i�in
+// 1. oyuncu için
 int gecerkenAl = 0;
-// 2. oyuncu i�in
+// 2. oyuncu için
 int GecerkenAl = 0;
 
 //Prototipler
@@ -24,94 +24,70 @@ void S(char tahta[][8], int *x, int *y, int *x2, int *y2, int *q);
 void p(char tahta[][8], int *x, int *y, int *x2, int *y2, int *q)
 {	
 	while(1)
-	{		
-		//Tahtada bulunmayan bir konum se�ilirse veilecek hata(ta��n se�ildi�i konum)
-		if((*x<1 || *x>8) || (*y<1 || *y>8))
-		{
-			*q = 1;
-			break;
-		}
-		//Tahtada bulunmayan bir konum se�ilirse veilecek hata(ta��n gidece�i konum)
-		if((*x2<1 || *x2>8) || (*y2<1 || *y2>8))
-		{
-			*q = 1;
-			break;
-		}
-		//Tahtadaki bo� bir karakteri se�ti�inde verilecek hata
-		else if(tahta[*y-1][*x-1] == '#')
-		{
-			*q = 1;
-			break;
-		}		
-		//Rakip tak�m�n ta�lar� se�ilirse verilecek hata		
-		else if(tahta[*y-1][*x-1] == 'P' || tahta[*y-1][*x-1] == 'K' || tahta[*y-1][*x-1] == 'A' || tahta[*y-1][*x-1] == 'F' || tahta[*y-1][*x-1] == 'V' || tahta[*y-1][*x-1] == 'S')
-		{
-			*q = 1;
-			break;
-		}			
+	{					
 		if(*y2-*y == 2)
 		{
 			//ilk defa oynanmayan piyon 1 birimden fazla oynanamaz
 			if(*y != 2)
 			{
-				*q = 1;
+				*q = 0;
 				break;
 			}	
-			// ilk defa oynanacak piyonun iki birim ileriye gidebilme �artlar�
+			// ilk defa oynanacak piyonun iki birim ileriye gidebilme şartları
 			else
 			{
-				// Ayn� s�tunda iki birim ileri oynayabilir
+				// Aynı sütunda iki birim ileri oynayabilir
 				if(*x2-*x == 0)
 				{
-					// Piyonun �n� bo�sa d�ng�den ��k�l�r oyun devam eder
+					// Piyonun önü boşsa döngüden çıkılır oyun devam eder
 					if(tahta[*y2-1][*x2-1] == '#')
 					{
-						gecerkenAl = 1; // bu komut rakip tak�m�n piyon s�r���nde kullan�l�cak  gecerkenAl ==1 olmas� piyonun 2 defa s�r�lm�� olmas�n� g�sterir
-						GecerkenAl = 0; // Her while dan ��k���m�zda rakibin GecerkenAl � 0 olmal�
-						*q = 0;
+						gecerkenAl = 1; // bu komut rakip takımın piyon sürüşünde kullanılıcak  gecerkenAl ==1 olması piyonun 2 defa sürülmüş olmasını gösterir
+						GecerkenAl = 0; // Her while dan çıkışımızda rakibin GecerkenAl ı 0 olmalı
+						*q = 1;
 						break; 
 					}
-					// Piyonun �n�nde herhangi bir ta� varsa hata al�n�r
+					// Piyonun önünde herhangi bir taş varsa hata alınır
 					else
 					{
-						*q = 1;
+						*q = 0;
 						break;
 					}
 				}
-				// �ki birim oynanan piyon hi�bir zaman ba�ka s�tuna ge�emz
+				// İki birim oynanan piyon hiçbir zaman başka sütuna geçemz
 				else
 				{
-					*q = 1;
+					*q = 0;
 					break;
 				}
 			}
 		}				
-		//Piyonlar geriye oynayamaz ve ayn� sat�rda hareket edemez
+		//Piyonlar geriye oynayamaz ve aynı satırda hareket edemez
 		else if(*y2-*y <= 0)
 		{		
-			*q = 1;
+			*q = 0;
 			break;
 		}				
-		//2 birimden fazla ilerlenildi�inde verilecek hata
+		//2 birimden fazla ilerlenildiğinde verilecek hata
 		else if(*y2-*y > 2)
 		{
-			*q = 1;
+			*q = 0;
 			break;
 		}		
-		//Piyonlar genellikle 1 birim ileri oynat�labilir(�n�nde herhangi bir ta� olmad��� s�rece) dolay�s�yla art�k d�ng�den ��kabiliriz
+		//Piyonlar genellikle 1 birim ileri oynatılabilir(Önünde herhangi bir taş olmadığı sürece) dolayısıyla artık döngüden çıkabiliriz
 		else if(*y2-*y == 1)
 		{			
-			// Piyonlar 1 birim �apraz hareket ettrilirse
+			// Piyonlar 1 birim çapraz hareket ettrilirse
 			if(*x2-*x == 1 || *x2-*x == -1)
 			{
-				// Piyonlar�n �apraz hareket edebilmesi i�in gidece�i karede rakip tak�m�n ta�lar� bulunmal�
+				// Piyonların çapraz hareket edebilmesi için gideceği karede rakip takımın taşları bulunmalı
 				if(tahta[*y2-1][*x2-1] == 'P' || tahta[*y2-1][*x2-1] == 'K' || tahta[*y2-1][*x2-1] == 'A' || tahta[*y2-1][*x2-1] == 'F' || tahta[*y2-1][*x2-1] == 'V')
 				{
 					GecerkenAl = 0;
-					*q = 0;
+					*q = 1;
 					break;
 				}
-				// Ge�erken alma	
+				// Geçerken alma	
 				else if(GecerkenAl == 1)
 				{
 					if(tahta[*y-1][*x-1+1] == 'P' && *x2-*x == 1 && tahta[*y2-1-1][*x2-1] == 'P')
@@ -120,34 +96,34 @@ void p(char tahta[][8], int *x, int *y, int *x2, int *y2, int *q)
 						tahta[*y-1][*x-1-1] = '#';
 					else
 					{
-						*q = 1;
+						*q = 0;
 						break;
 					}
 					GecerkenAl = 0;
-					*q = 0;
+					*q = 1;
 					break;
 				}
-				// Aksi halde hatal� oynama yap�lm�� olur	
+				// Aksi halde hatalı oynama yapılmış olur	
 				else
 				{
-					*q = 1;
+					*q = 0;
 					break;
 				}	 
 			}
-			// Piyonlar 1 birim ileri oynat�l�rsa 
+			// Piyonlar 1 birim ileri oynatılırsa 
 			else
 			{				
-				// Piyonun �n� bo�sa d�ng�den ��k�l�r oyun devam eder
+				// Piyonun önü boşsa döngüden çıkılır oyun devam eder
 				if(tahta[*y2-1][*x2-1] == '#')
 				{
 					GecerkenAl = 0;
-					*q = 0;
+					*q = 1;
 					break;
 				}
-				// Piyonun �n�nde herhangi bir ta� varsa hata al�n�r
+				// Piyonun önünde herhangi bir taş varsa hata alınır
 				else
 				{
-					*q = 1;
+					*q = 0;
 					break;
 				}	
 			}			
@@ -160,31 +136,7 @@ void k(char tahta[][8], int *x, int *y, int *x2, int *y2, int *q)
 	int i, j;
 	while(1)
 	{		
-		//Tahtada bulunmayan bir konum se�ilirse veilecek hata(ta��n se�ildi�i konum)
-		if((*x<1 || *x>8) || (*y<1 || *y>8))
-		{
-			*q = 1;
-			break;
-		}
-		//Tahtada bulunmayan bir konum se�ilirse veilecek hata(ta��n gidece�i konum)
-		if((*x2<1 || *x2>8) || (*y2<1 || *y2>8))
-		{
-			*q = 1;
-			break;
-		}
-		//Tahtadaki bo� bir karakteri se�ti�inde verilecek hata
-		else if(tahta[*y-1][*x-1] == '#')
-		{
-			*q = 1;
-			break;
-		}		
-		//Rakip tak�m�n ta�lar� se�ilirse verilecek hata		
-		else if(tahta[*y-1][*x-1] == 'P' || tahta[*y-1][*x-1] == 'K' || tahta[*y-1][*x-1] == 'A' || tahta[*y-1][*x-1] == 'F' || tahta[*y-1][*x-1] == 'V' || tahta[*y-1][*x-1] == 'S')
-		{
-			*q = 1;
-			break;
-		}
-		// Kale ayn� s�tunda istenildi�i kadar ileri gidebilir
+		// Kale aynı sütunda istenildiği kadar ileri gidebilir
 		if(*x2 == *x && *y2 != *y)
 		{	
 			// Kale ileri oynarsa
@@ -192,26 +144,26 @@ void k(char tahta[][8], int *x, int *y, int *x2, int *y2, int *q)
 			{	
 				for(i=*y-1+1; i<*y2-1; i++)
 				{	
-					//  Kalenin �n�nde ta� versa *q = 1 atamas� yap�l�r (ana fonksiyonda q = 1 ise hata al�nacakt�r)
+					//  Kalenin önünde taş versa *q = 1 ataması yapılır (ana fonksiyonda q = 1 ise hata alınacaktır)
 					if(tahta[i][*x-1] != '#')
 					{
-						*q = 1;
+						*q = 0;
 						break;
 					}
 				}
-				// *q = 1 ise while d�ng�s�nden ve dolay�s�yla 'k' fonksiyonundan ��k�l�r
-				if(*q == 1)
+				// *q = 0 ise while döngüsünden ve dolayısıyla 'k' fonksiyonundan çıkılır
+				if(*q == 0)
 					break;
-				// Kalenin �n� bo�sa ve gitmek istedi�i yer bo� veya rakibin herhangi bir ta�� varsa  q = 0 (ana fonksiyonda hata al�nmayaca�� anlam�na gelecek) kale oraya gidebilir
+				// Kalenin önü boşsa ve gitmek istediği yer boş veya rakibin herhangi bir taşı varsa  q = 0 (ana fonksiyonda hata alınmayacağı anlamına gelecek) kale oraya gidebilir
 				if(tahta[*y2-1][*x2-1] == 'P' || tahta[*y2-1][*x2-1] == 'K' || tahta[*y2-1][*x2-1] == 'A' || tahta[*y2-1][*x2-1] == 'F' || tahta[*y2-1][*x2-1] == 'V' || tahta[*y2-1][*x2-1] == '#')
 				{
-					*q = 0;
+					*q = 1;
 					break;
 				}
-				// Kalenin �n� bo�sa ve gitmek istedi�i konumda kendi ta�lar�ndan herhangi biri varsa hatal� se�im olacakt�r
+				// Kalenin önü boşsa ve gitmek istediği konumda kendi taşlarından herhangi biri varsa hatalı seçim olacaktır
 				else
 				{
-					*q = 1;
+					*q = 0;
 					break;
 				}
 			}
@@ -220,26 +172,26 @@ void k(char tahta[][8], int *x, int *y, int *x2, int *y2, int *q)
 			{
 				for(i=*y2-1-1; i>*y-1; i--)
 				{
-					//  Kalenin �n�nde ta� versa *q = 1 atamas� yap�l�r (ana fonksiyonda q = 1 ise hata al�nacakt�r)
+					//  Kalenin önünde taş versa *q = 1 ataması yapılır (ana fonksiyonda q = 1 ise hata alınacaktır)
 					if(tahta[i][*x-1] != '#')
 					{
-						*q = 1;
+						*q = 0;
 						break;
 					}
 				}
-				// *q = 1 ise while d�ng�s�nden ve dolay�s�yla 'k' fonksiyonundan ��k�l�r
-				if(*q == 1)
+				// *q = 0 ise while döngüsünden ve dolayısıyla 'k' fonksiyonundan çıkılır
+				if(*q == 0)
 					break;
-				// Kalenin �n� bo�sa ve gitmek istedi�i yer bo� veya rakibin herhangi bir ta�� varsa  q = 0 (ana fonksiyonda hata al�nmayaca�� anlam�na gelecek) kale oraya gidebilir	
+				// Kalenin önü boşsa ve gitmek istediği yer boş veya rakibin herhangi bir taşı varsa  q = 0 (ana fonksiyonda hata alınmayacağı anlamına gelecek) kale oraya gidebilir	
 				if(tahta[*y2-1][*x2-1] == 'P' || tahta[*y2-1][*x2-1] == 'K' || tahta[*y2-1][*x2-1] == 'A' || tahta[*y2-1][*x2-1] == 'F' || tahta[*y2-1][*x2-1] == 'V' || tahta[*y2-1][*x2-1] == '#')
 				{
-					*q = 0;
+					*q = 1;
 					break;
 				}
-				// Kalenin �n� bo�sa ve gitmek istedi�i konumda kendi ta�lar�ndan herhangi biri varsa hatal� se�im olacakt�r
+				// Kalenin önü boşsa ve gitmek istediği konumda kendi taşlarından herhangi biri varsa hatalı seçim olacaktır
 				else
 				{
-					*q = 1;
+					*q = 0;
 					break;
 				}
 			}				
@@ -251,57 +203,670 @@ void k(char tahta[][8], int *x, int *y, int *x2, int *y2, int *q)
 			{	
 				for(i=*x-1+1; i<*x2-1; i++)
 				{	
-					//  Kalenin �n�nde ta� versa *q = 1 atamas� yap�l�r (ana fonksiyonda q = 1 ise hata al�nacakt�r)
+					//  Kalenin önünde taş versa *q = 0 ataması yapılır (ana fonksiyonda q = 1 ise hata alınacaktır)
 					if(tahta[*y-1][i] != '#')
 					{
-						*q = 1;
+						*q = 0;
 						break;
 					}
 				}
-				// *q = 1 ise while d�ng�s�nden ve dolay�s�yla 'k' fonksiyonundan ��k�l�r
-				if(*q == 1)
+				// *q = 0 ise while döngüsünden ve dolayısıyla 'k' fonksiyonundan çıkılır
+				if(*q == 0)
 					break;
-				// Kalenin �n� bo�sa ve gitmek istedi�i yer bo� veya rakibin herhangi bir ta�� varsa  q = 0 (ana fonksiyonda hata al�nmayaca�� anlam�na gelecek) kale oraya gidebilir
+				// Kalenin önü boşsa ve gitmek istediği yer boş veya rakibin herhangi bir taşı varsa  q = 0 (ana fonksiyonda hata alınmayacağı anlamına gelecek) kale oraya gidebilir
 				if(tahta[*y2-1][*x2-1] == 'P' || tahta[*y2-1][*x2-1] == 'K' || tahta[*y2-1][*x2-1] == 'A' || tahta[*y2-1][*x2-1] == 'F' || tahta[*y2-1][*x2-1] == 'V' || tahta[*y2-1][*x2-1] == '#')
-				{
-					*q = 0;
-					break;
-				}
-				// Kalenin �n� bo�sa ve gitmek istedi�i konumda kendi ta�lar�ndan herhangi biri varsa hatal� se�im olacakt�r
-				else
 				{
 					*q = 1;
 					break;
 				}
+				// Kalenin önü boşsa ve gitmek istediği konumda kendi taşlarından herhangi biri varsa hatalı seçim olacaktır
+				else
+				{
+					*q = 0;
+					break;
+				}
 			}
-			// Kale sa�a oynarsa
+			// Kale sağa oynarsa
 			else if(*x2<*x)
 			{
 				for(i=*x2-1-1; i>*x-1; i--)
 				{
-					//  Kalenin �n�nde ta� versa *q = 1 atamas� yap�l�r (ana fonksiyonda q = 1 ise hata al�nacakt�r)
+					//  Kalenin önünde taş versa *q = 1 ataması yapılır (ana fonksiyonda q = 1 ise hata alınacaktır)
 					if(tahta[*y-1][i] != '#')
 					{
-						*q = 1;
+						*q = 0;
 						break;
 					}
 				}
-				// *q = 1 ise while d�ng�s�nden ve dolay�s�yla 'k' fonksiyonundan ��k�l�r
-				if(*q == 1)
+				// *q = 0 ise while döngüsünden ve dolayısıyla 'k' fonksiyonundan çıkılır
+				if(*q == 0)
 					break;
-				// Kalenin �n� bo�sa ve gitmek istedi�i yer bo� veya rakibin herhangi bir ta�� varsa  q = 0 (ana fonksiyonda hata al�nmayaca�� anlam�na gelecek) kale oraya gidebilir	
+				// Kalenin önü boşsa ve gitmek istediği yer boş veya rakibin herhangi bir taşı varsa  q = 0 (ana fonksiyonda hata alınmayacağı anlamına gelecek) kale oraya gidebilir	
 				if(tahta[*y2-1][*x2-1] == 'P' || tahta[*y2-1][*x2-1] == 'K' || tahta[*y2-1][*x2-1] == 'A' || tahta[*y2-1][*x2-1] == 'F' || tahta[*y2-1][*x2-1] == 'V' || tahta[*y2-1][*x2-1] == '#')
-				{
-					*q = 0;
-					break;
-				}
-				// Kalenin �n� bo�sa ve gitmek istedi�i konumda kendi ta�lar�ndan herhangi biri varsa hatal� se�im olacakt�r
-				else
 				{
 					*q = 1;
 					break;
 				}
+				// Kalenin önü boşsa ve gitmek istediği konumda kendi taşlarından herhangi biri varsa hatalı seçim olacaktır
+				else
+				{
+					*q = 0;
+					break;
+				}
 			}				
+		}
+		// Kale düz hareket ettirilmezse hata alınır
+		else
+		{
+			*q = 0;
+			break;
+		}
+	}
+}
+// Oyuncu1 atı
+void a(char tahta[][8], int *x, int *y, int *x2, int *y2, int *q)
+{
+	while(1)
+	{
+		// At 2 birim ileri veya geri haraket ederse
+		if(*y2-*y == 2 || *y2-*y == -2)
+		{
+			// 1 birim sağa veya sola giderse hata yok
+			if(*x2-*x == 1 || *x2-*x == -1)
+			{
+				// Atın gideceği konumda kendi taşları yoksa hata alınmaz
+				if(tahta[*y2-1][*y2-1] == '#' || tahta[*y2-1][*x2-1] == 'P' || tahta[*y2-1][*x2-1] == 'K' || tahta[*y2-1][*x2-1] == 'A' || tahta[*y2-1][*x2-1] == 'F' || tahta[*y2-1][*x2-1] == 'V')
+				{
+					*q = 1; 
+					break;
+				}
+				// Aksi durumlarda hata alınır
+				else
+				{
+					*q = 0;
+					break;
+				}
+			} // 1 birim dışında bir oynama olursa hata alınır
+			else
+			{
+				*q = 0;
+				break;
+			}
+		}
+		// At 2 birim sağa veya sola giderse
+		else if(*x2-*x == 2 || *x2-*x == -2)
+		{
+			// 1 birim aşağı veya yukarı gitmeli
+			if(*y2-*y == 1 || *y2-*y == -1)
+			{
+				// Gideceği konumda kendi taşları yoks hata alınmaz
+				if(tahta[*y2-1][*y2-1] == '#' || tahta[*y2-1][*x2-1] == 'P' || tahta[*y2-1][*x2-1] == 'K' || tahta[*y2-1][*x2-1] == 'A' || tahta[*y2-1][*x2-1] == 'F' || tahta[*y2-1][*x2-1] == 'V')
+				{
+					*q = 1; 
+					break;
+				}
+				// Aksi durumlarda hata alınır
+				else
+				{
+					*q = 0;
+					break;
+				}
+			}
+			else
+			{
+				*q = 0;
+				break;
+			}
+		}
+		else
+			{
+				*q = 0;
+				break;
+			}
+	}
+}
+void f(char tahta[][8], int *x, int *y, int *x2, int *y2, int *q)
+{
+	int kontrol = 0, i;
+	while(1)
+	{
+		// Fil aşağı hareket ederse
+		if(*y2-*y>0)
+		{
+			kontrol = 0;
+			// Fil aşağı kaç birim gittiyse sağa o kadar gitmeli
+			if(*x2-*x == *y2-*y)
+			{
+				// Filin önünde taş varsa
+				for(i=0; i<*y2-*y-1; i++)
+				{
+					if(tahta[*y+i][*x+i] != '#')
+						kontrol++;					
+				}
+				if(kontrol>0)
+				{
+					*q = 0;
+					break;
+				}
+				else
+				{	// Gidilen konumda kendi taşları yoksa
+					if(tahta[*y2-1][*x2-1] != 'p' || tahta[*y2-1][*x2-1] != 'k' || tahta[*y2-1][*x2-1] != 'a' || tahta[*y2-1][*x2-1] != 'f' || tahta[*y2-1][*x2-1] != 'v' || tahta[*y2-1][*x2-1] != 's')
+					{
+						*q = 1; 
+						break;
+					}
+					else
+					{
+						*q = 0;
+						break;
+					}
+				}				
+			}
+			// Fil aşağı kaç birim gittiyse sola o kadar gitmeli
+			else if(*x2-*x == *y-*y2)
+			{
+				// Filin önünde taş varsa
+				for(i=0; i<*y2-*y-1; i++)
+				{
+					if(tahta[*y+i][*x-2-i] != '#')
+						kontrol++;					
+				}
+				if(kontrol>0)
+				{
+					*q = 0;
+					break;
+				}
+				else
+				{	// Gidilen konumda kendi taşları yoksa
+					if(tahta[*y2-1][*x2-1] != 'p' || tahta[*y2-1][*x2-1] != 'k' || tahta[*y2-1][*x2-1] != 'a' || tahta[*y2-1][*x2-1] != 'f' || tahta[*y2-1][*x2-1] != 'v' || tahta[*y2-1][*x2-1] != 's')
+					{
+						*q = 1; 
+						break;
+					}
+					else
+					{
+						*q = 0;
+						break;
+					}
+				}
+			}
+			else
+			{
+				*q = 0;
+				break;
+			}
+		}
+		// Fil yukarı hareket ederse
+		if(*y2-*y<0)
+		{
+			kontrol = 0;
+			// Fil yukarı kaç birim gittiyse sağa o kadar gitmeli
+			if(*x2-*x == *y-*y2)
+			{
+				// Filin önünde taş varsa
+				for(i=0; i<*y2-*y-1; i++)
+				{
+					if(tahta[*y-2-i][*x+i] != '#')
+						kontrol++;					
+				}
+				if(kontrol>0)
+				{
+					*q = 0;
+					break;
+				}
+				else
+				{	// Gidilen konumda kendi taşları yoksa
+					if(tahta[*y2-1][*x2-1] != 'p' || tahta[*y2-1][*x2-1] != 'k' || tahta[*y2-1][*x2-1] != 'a' || tahta[*y2-1][*x2-1] != 'f' || tahta[*y2-1][*x2-1] != 'v' || tahta[*y2-1][*x2-1] != 's')
+					{
+						*q = 1; 
+						break;
+					}
+					else
+					{
+						*q = 0;
+						break;
+					}
+				}				
+			}
+			// Fil yukarı kaç birim gittiyse sola o kadar gitmeli
+			else if(*x2-*x == *y2-*y)
+			{
+				// Filin önünde taş varsa
+				for(i=0; i<*y2-*y-1; i++)
+				{ 
+					if(tahta[*y-2-i][*x-2-i] != '#')
+						kontrol++;					
+				}
+				if(kontrol>0)
+				{
+					*q = 0;
+					break;
+				}
+				else
+				{	// Gidilen konumda kendi taşları yoksa
+					if(tahta[*y2-1][*x2-1] != 'p' || tahta[*y2-1][*x2-1] != 'k' || tahta[*y2-1][*x2-1] != 'a' || tahta[*y2-1][*x2-1] != 'f' || tahta[*y2-1][*x2-1] != 'v' || tahta[*y2-1][*x2-1] != 's')
+					{
+						*q = 1; 
+						break;
+					}
+					else
+					{
+						*q = 0;
+						break;
+					}
+				}
+			}
+			else
+			{
+				*q = 0;
+				break;
+			}
+		}
+	}
+}
+// Oyuncu1 veziri
+// Vezir, kale ve filin yapatığı her şeyi yapabilir
+void v(char tahta[][8], int *x, int *y, int *x2, int *y2, int *q)
+{
+	int i, j, kontrol;
+	while(1)
+	{		
+		// Kale aynı sütunda istenildiği kadar ileri gidebilir
+		if(*x2 == *x && *y2 != *y)
+		{	
+			// Kale ileri oynarsa
+			if(*y2>*y)
+			{	
+				for(i=*y-1+1; i<*y2-1; i++)
+				{	
+					//  Kalenin önünde taş versa *q = 0 ataması yapılır (ana fonksiyonda q = 1 ise hata alınacaktır)
+					if(tahta[i][*x-1] != '#')
+					{
+						*q = 0;
+						break;
+					}
+				}
+				// *q = 0 ise while döngüsünden ve dolayısıyla 'k' fonksiyonundan çıkılır
+				if(*q == 0)
+					break;
+				// Kalenin önü boşsa ve gitmek istediği yer boş veya rakibin herhangi bir taşı varsa  q = 0 (ana fonksiyonda hata alınmayacağı anlamına gelecek) kale oraya gidebilir
+				if(tahta[*y2-1][*x2-1] == 'P' || tahta[*y2-1][*x2-1] == 'K' || tahta[*y2-1][*x2-1] == 'A' || tahta[*y2-1][*x2-1] == 'F' || tahta[*y2-1][*x2-1] == 'V' || tahta[*y2-1][*x2-1] == '#')
+				{
+					*q = 1;
+					break;
+				}
+				// Kalenin önü boşsa ve gitmek istediği konumda kendi taşlarından herhangi biri varsa hatalı seçim olacaktır
+				else
+				{
+					*q = 0;
+					break;
+				}
+			}
+			// Kale geri oynarsa
+			else if(*y2<*y)
+			{
+				for(i=*y2-1-1; i>*y-1; i--)
+				{
+					//  Kalenin önünde taş versa *q = 0 ataması yapılır (ana fonksiyonda q = 1 ise hata alınacaktır)
+					if(tahta[i][*x-1] != '#')
+					{
+						*q = 0;
+						break;
+					}
+				}
+				// *q = 0 ise while döngüsünden ve dolayısıyla 'k' fonksiyonundan çıkılır
+				if(*q == 0)
+					break;
+				// Kalenin önü boşsa ve gitmek istediği yer boş veya rakibin herhangi bir taşı varsa  q = 0 (ana fonksiyonda hata alınmayacağı anlamına gelecek) kale oraya gidebilir	
+				if(tahta[*y2-1][*x2-1] == 'P' || tahta[*y2-1][*x2-1] == 'K' || tahta[*y2-1][*x2-1] == 'A' || tahta[*y2-1][*x2-1] == 'F' || tahta[*y2-1][*x2-1] == 'V' || tahta[*y2-1][*x2-1] == '#')
+				{
+					*q = 1;
+					break;
+				}
+				// Kalenin önü boşsa ve gitmek istediği konumda kendi taşlarından herhangi biri varsa hatalı seçim olacaktır
+				else
+				{
+					*q = 0;
+					break;
+				}
+			}				
+		}
+		else if(*y2 == *y && *x2 != *x)
+		{	
+			// Kale sola oynarsa
+			if(*x2>*x)
+			{	
+				for(i=*x-1+1; i<*x2-1; i++)
+				{	
+					//  Kalenin önünde taş versa *q = 0 ataması yapılır (ana fonksiyonda q = 1 ise hata alınacaktır)
+					if(tahta[*y-1][i] != '#')
+					{
+						*q = 0;
+						break;
+					}
+				}
+				// *q = 0 ise while döngüsünden ve dolayısıyla 'k' fonksiyonundan çıkılır
+				if(*q == 0)
+					break;
+				// Kalenin önü boşsa ve gitmek istediği yer boş veya rakibin herhangi bir taşı varsa  q = 0 (ana fonksiyonda hata alınmayacağı anlamına gelecek) kale oraya gidebilir
+				if(tahta[*y2-1][*x2-1] == 'P' || tahta[*y2-1][*x2-1] == 'K' || tahta[*y2-1][*x2-1] == 'A' || tahta[*y2-1][*x2-1] == 'F' || tahta[*y2-1][*x2-1] == 'V' || tahta[*y2-1][*x2-1] == '#')
+				{
+					*q = 1;
+					break;
+				}
+				// Kalenin önü boşsa ve gitmek istediği konumda kendi taşlarından herhangi biri varsa hatalı seçim olacaktır
+				else
+				{
+					*q = 0;
+					break;
+				}
+			}
+			// Kale sağa oynarsa
+			else if(*x2<*x)
+			{
+				for(i=*x2-1-1; i>*x-1; i--)
+				{
+					//  Kalenin önünde taş versa *q = 0 ataması yapılır (ana fonksiyonda q = 1 ise hata alınacaktır)
+					if(tahta[*y-1][i] != '#')
+					{
+						*q = 0;
+						break;
+					}
+				}
+				// *q = 0 ise while döngüsünden ve dolayısıyla 'k' fonksiyonundan çıkılır
+				if(*q == 0)
+					break;
+				// Kalenin önü boşsa ve gitmek istediği yer boş veya rakibin herhangi bir taşı varsa  q = 0 (ana fonksiyonda hata alınmayacağı anlamına gelecek) kale oraya gidebilir	
+				if(tahta[*y2-1][*x2-1] == 'P' || tahta[*y2-1][*x2-1] == 'K' || tahta[*y2-1][*x2-1] == 'A' || tahta[*y2-1][*x2-1] == 'F' || tahta[*y2-1][*x2-1] == 'V' || tahta[*y2-1][*x2-1] == '#')
+				{
+					*q = 1;
+					break;
+				}
+				// Kalenin önü boşsa ve gitmek istediği konumda kendi taşlarından herhangi biri varsa hatalı seçim olacaktır
+				else
+				{
+					*q = 0;
+					break;
+				}
+			}				
+		}
+		// Fil aşağı hareket ederse
+		if(*y2-*y>0)
+		{
+			kontrol = 0;
+			// Fil aşağı kaç birim gittiyse sağa o kadar gitmeli
+			if(*x2-*x == *y2-*y)
+			{
+				// Filin önünde taş varsa
+				for(i=0; i<*y2-*y-1; i++)
+				{
+					if(tahta[*y+i][*x+i] != '#')
+						kontrol++;					
+				}
+				if(kontrol>0)
+				{
+					*q = 0;
+					break;
+				}
+				else
+				{	// Gidilen konumda kendi taşları yoksa
+					if(tahta[*y2-1][*x2-1] != 'p' || tahta[*y2-1][*x2-1] != 'k' || tahta[*y2-1][*x2-1] != 'a' || tahta[*y2-1][*x2-1] != 'f' || tahta[*y2-1][*x2-1] != 'v' || tahta[*y2-1][*x2-1] != 's')
+					{
+						*q = 1; 
+						break;
+					}
+					else
+					{
+						*q = 0;
+						break;
+					}
+				}				
+			}
+			// Fil aşağı kaç birim gittiyse sola o kadar gitmeli
+			else if(*x2-*x == *y-*y2)
+			{
+				// Filin önünde taş varsa
+				for(i=0; i<*y2-*y-1; i++)
+				{
+					if(tahta[*y+i][*x-2-i] != '#')
+						kontrol++;					
+				}
+				if(kontrol>0)
+				{
+					*q = 0;
+					break;
+				}
+				else
+				{	// Gidilen konumda kendi taşları yoksa
+					if(tahta[*y2-1][*x2-1] != 'p' || tahta[*y2-1][*x2-1] != 'k' || tahta[*y2-1][*x2-1] != 'a' || tahta[*y2-1][*x2-1] != 'f' || tahta[*y2-1][*x2-1] != 'v' || tahta[*y2-1][*x2-1] != 's')
+					{
+						*q = 1; 
+						break;
+					}
+					else
+					{
+						*q = 0;
+						break;
+					}
+				}
+			}
+			else
+			{
+				*q = 0;
+				break;
+			}
+		}
+		// Fil yukarı hareket ederse
+		if(*y2-*y<0)
+		{
+			kontrol = 0;
+			// Fil yukarı kaç birim gittiyse sağa o kadar gitmeli
+			if(*x2-*x == *y-*y2)
+			{
+				// Filin önünde taş varsa
+				for(i=0; i<*y2-*y-1; i++)
+				{
+					if(tahta[*y-2-i][*x+i] != '#')
+						kontrol++;					
+				}
+				if(kontrol>0)
+				{
+					*q = 0;
+					break;
+				}
+				else
+				{	// Gidilen konumda kendi taşları yoksa
+					if(tahta[*y2-1][*x2-1] != 'p' || tahta[*y2-1][*x2-1] != 'k' || tahta[*y2-1][*x2-1] != 'a' || tahta[*y2-1][*x2-1] != 'f' || tahta[*y2-1][*x2-1] != 'v' || tahta[*y2-1][*x2-1] != 's')
+					{
+						*q = 1; 
+						break;
+					}
+					else
+					{
+						*q = 0;
+						break;
+					}
+				}				
+			}
+			// Fil yukarı kaç birim gittiyse sola o kadar gitmeli
+			else if(*x2-*x == *y2-*y)
+			{
+				// Filin önünde taş varsa
+				for(i=0; i<*y2-*y-1; i++)
+				{ 
+					if(tahta[*y-2-i][*x-2-i] != '#')
+						kontrol++;					
+				}
+				if(kontrol>0)
+				{
+					*q = 0;
+					break;
+				}
+				else
+				{	// Gidilen konumda kendi taşları yoksa
+					if(tahta[*y2-1][*x2-1] != 'p' || tahta[*y2-1][*x2-1] != 'k' || tahta[*y2-1][*x2-1] != 'a' || tahta[*y2-1][*x2-1] != 'f' || tahta[*y2-1][*x2-1] != 'v' || tahta[*y2-1][*x2-1] != 's')
+					{
+						*q = 1; 
+						break;
+					}
+					else
+					{
+						*q = 0;
+						break;
+					}
+				}
+			}
+			else
+			{
+				*q = 0;
+				break;
+			}
+		}
+	}
+}
+// Oyuncu1 şahı
+void s(char tahta[][8], int *x, int *y, int *x2, int *y2, int *q)
+{
+	int i, j;
+	*q = 3; // *q değerini değiştirmeden rakibin kale fonksiyonu çağrıldığında hata aldığım için *q değerine boş bir değer atadım
+	for(i=1; i<9; i++)
+	{
+		for(j=1; j<9; j++)
+		{
+			if(tahta[i-1][j-1] == 'K')
+			{
+				K(tahta, &j, &i, x2, y2, q);
+			}
+			else if(tahta[i-1][j-1] == 'A')
+			{
+				A(tahta, &j, &i, x2, y2, q);
+			}
+			else if(tahta[i-1][j-1] == 'F')
+			{
+				F(tahta, &j, &i, x2, y2, q);
+			}
+			else if(tahta[i-1][j-1] == 'V')
+			{
+				V(tahta, &j, &i, x2, y2, q);
+			}
+				if(*q == 1)
+				{
+					*q = 2;
+					break;
+				}
+			// Rakip takımın şahının 1 birim yakınına oynatmaya çalışılabilir. Bunun için tüm şartlar aşağıda yazıldı
+			else if(tahta[i-1][j-1] == 'S')
+			{
+				// Şahını rakip takımın şahının 1 sağına/soluna oynatmaya çalıştığında hata alınacak
+				if((i-1 == *y2-1) && (j-1 == *x2-2)) 
+				{
+					*q = 4;
+					break;
+				}
+				// Şahını rakip takımın şahının 1 sağına/soluna oynatmaya çalıştığında hata alınacak
+				else if((i-1 == *y2-1) && (j-1 == *x2)) 
+				{
+					*q = 4;
+					break;
+				}
+				// Şahını rakip takımın şahının 1 önüne/arkasına oynatmaya çalıştığında hata alınacak
+				else if((i-1 == *y2-2) && (j-1 == *x2-1)) 
+				{
+					*q = 4;
+					break;
+				}
+				// Şahını rakip takımın şahının 1 birim önüne/arkasına oynatmaya çalıştığında hata alınacak
+				else if((i-1 == *y2) && (j-1 == *x2-2)) 
+				{
+					*q = 4;
+					break;
+				}
+				// Rakibin şahının 1 birim çaprazına oynanmak istendiğinde hata alınır
+				else if((i-1 == *y2-2) && (j-1 == *x2)) 
+				{
+					*q = 4;
+					break;
+				}
+				// Rakibin şahının 1 birim çaprazına oynanmak istendiğinde hata alınır
+				else if((i-1 == *y2) && (j-1 == *x2-2)) 
+				{
+					*q = 4;
+					break;
+				}
+				// Rakibin şahının 1 birim çaprazına oynanmak istendiğinde hata alınır
+				else if((i-1 == *y2-2) && (j-1 == *x2-2)) 
+				{
+					*q = 4;
+					break;
+				}
+				// Rakibin şahının 1 birim çaprazına oynanmak istendiğinde hata alınır
+				else if((i-1 == *y2-2) && (j-1 == *x2-2)) 
+				{
+					*q = 4;
+					break;
+				}
+			}
+		}
+		if(*q == 2 || *q == 4)
+		{
+			printf("asma = %d\n", *q);
+			break;	
+		}
+	}
+	while(1)
+	{
+		if(*q == 2 || *q == 4)
+		{
+			*q = 0; 
+			break;	
+		} 
+			
+		// Şah ileri oynarsa
+		if(*y2-*y == 1)
+		{
+			if(*x2-*x == 0 || *x2-*x == 1 || *x2-*x == -1) 
+			{
+				*q = 1;
+				break;
+			}
+			else
+			{
+				*q = 0;
+				break;
+			}
+		}
+		// Şah geri oynarsa
+		else if(*y2-*y == -1)
+		{
+			if(*x2-*x == 0 || *x2-*x == 1 || *x2-*x == -1) 
+			{
+				*q = 1;
+				break;
+			}
+			else
+			{
+				*q = 0;
+				break;
+			}
+		}
+		// Şah y ekseninde hareket etmezse
+		else if(*y2-*y == 0)
+		{
+			if(*x2-*x == 1 || *x2-*x == -1) 
+			{
+				*q = 1;
+				break;
+			}
+			else
+			{
+				*q = 0;
+				break;
+			}
+		}
+		else
+		{
+			*q = 0;
+			break;
 		}
 	}
 }
@@ -310,94 +875,70 @@ void P(char tahta[][8], int *x, int *y, int *x2, int *y2, int *q)
 {	
 	while(1)
 	{		
-		//Tahtada bulunmayan bir konum se�ilirse veilecek hata(ta��n se�ildi�i konum)
-		if((*x<1 || *x>8) || (*y<1 || *y>8))
-		{
-			*q = 1;
-			break;
-		}
-		//Tahtada bulunmayan bir konum se�ilirse veilecek hata(ta��n gidece�i konum)
-		if((*x2<1 || *x2>8) || (*y2<1 || *y2>8))
-		{
-			*q = 1;
-			break;
-		}
-		//Tahtadaki bo� bir karakteri se�ti�inde verilecek hata
-		if(tahta[*y-1][*x-1] == '#')
-		{
-			*q = 1;
-			break;
-		}
-		//Rakip tak�m�n ta�lar� se�ilirse verilecek hata
-		else if(tahta[*y-1][*x-1] == 'p' || tahta[*y-1][*x-1] == 'k' || tahta[*y-1][*x-1] == 'a' || tahta[*y-1][*x-1] == 'f' || tahta[*y-1][*x-1] == 'v' || tahta[*y-1][*x-1] == 's')
-		{
-			*q = 1;
-			break;
-		}
-		// Piyonlar 2 birim ileri oynat�l�rsa
+		// Piyonlar 2 birim ileri oynatılırsa
 		if(*y-*y2 == 2)
 		{
 			//ilk defa oynanmayan piyon 1 birimden fazla oynanamaz
 			if(*y != 7)
 			{
-				*q = 1;
+				*q = 0;
 				break;
 			}	
-			// ilk defa oynanacak piyonun iki birim ileriye gidebilme �artlar�
+			// ilk defa oynanacak piyonun iki birim ileriye gidebilme şartları
 			else
 			{
-				// Ayn� s�tunda iki birim ileri oynayabilir
+				// Aynı sütunda iki birim ileri oynayabilir
 				if(*x-*x2 == 0)
 				{
-					// Piyonun �n� bo�sa d�ng�den ��k�l�r oyun devam eder
+					// Piyonun önü boşsa döngüden çıkılır oyun devam eder
 					if(tahta[*y2-1][*x2-1] == '#')
 					{
-						GecerkenAl = 1; // bu komut rakip tak�m�n piyon s�r���nde kullan�l�cak. GecerkenAl ==1 olmas� piyonun 2 defa s�r�lm�� olmas�n� g�sterir
-						gecerkenAl = 0; // Her while dan ��k���m�zda rakibin gecerkenAl � 0 olmal�
-						*q = 0;
+						GecerkenAl = 1; // bu komut rakip takımın piyon sürüşünde kullanılıcak. GecerkenAl ==1 olması piyonun 2 defa sürülmüş olmasını gösterir
+						gecerkenAl = 0; // Her while dan çıkışımızda rakibin gecerkenAl ı 0 olmalı
+						*q = 1;
 						break; 
 					}
-					// Piyonun �n�nde herhangi bir ta� varsa hata al�n�r
+					// Piyonun önünde herhangi bir taş varsa hata alınır
 					else
 					{
-						*q = 1;
+						*q = 0;
 						break;
 					}
 				}
-				// �ki birim oynanan piyon hi�bir zaman ba�ka s�tuna ge�emz
+				// İki birim oynanan piyon hiçbir zaman başka sütuna geçemz
 				else
 				{
-					*q = 1;
+					*q = 0;
 					break;
 				}
 			}
 		}		
-		//Piyonlar geriye oynayamaz ve ayn� sat�rda hareket edemez
+		//Piyonlar geriye oynayamaz ve aynı satırda hareket edemez
 		else if(*y-*y2 <= 0)
 		{		
-			*q = 1;
+			*q = 0;
 			break;
 		}				
-		//2 birimden fazla ilerlenildi�inde verilecek hata
+		//2 birimden fazla ilerlenildiğinde verilecek hata
 		else if(*y-*y2 > 2)
 		{
-			*q = 1;
+			*q = 0;
 			break;
 		}			
-		//Piyonlar genellikle 1 birim ileri oynat�labilir(�n�nde herhangi bir ta� olmad��� s�rece) dolay�s�yla art�k d�ng�den ��kabiliriz
+		//Piyonlar genellikle 1 birim ileri oynatılabilir(Önünde herhangi bir taş olmadığı sürece) dolayısıyla artık döngüden çıkabiliriz
 		else if(*y-*y2 == 1)
 		{			
-			// Piyonlar 1 birim �apraz hareket ettrilirse
+			// Piyonlar 1 birim çapraz hareket ettrilirse
 			if(*x-*x2 == 1 || *x-*x2 == -1)
 			{
-				// Piyonlar�n �apraz hareket edebilmesi i�in gidece�i karede rakip tak�m�n ta�lar� bulunmal�
+				// Piyonların çapraz hareket edebilmesi için gideceği karede rakip takımın taşları bulunmalı
 				if(tahta[*y2-1][*x2-1] == 'p' || tahta[*y2-1][*x2-1] == 'k' || tahta[*y2-1][*x2-1] == 'a' || tahta[*y2-1][*x2-1] == 'f' || tahta[*y2-1][*x2-1] == 'v')
 				{
 					gecerkenAl = 0;
-					*q = 0; 
+					*q = 1; 
 					break;
 				}
-				// Ge�erken alma	
+				// Geçerken alma	
 				else if(gecerkenAl == 1)
 				{
 					if(tahta[*y-1][*x-1+1] == 'p' && *x2-*x == 1 && tahta[*y2-1+1][*x2-1] == 'p')
@@ -406,34 +947,34 @@ void P(char tahta[][8], int *x, int *y, int *x2, int *y2, int *q)
 						tahta[*y-1][*x-1-1] = '#';
 					else
 					{
-						*q = 1;
+						*q = 0;
 						break;
 					}
 					GecerkenAl = 0;
-					*q = 0;
+					*q = 1;
 					break;
 				}	
-				// Aksi halde hatal� oynama yap�lm�� olur	
+				// Aksi halde hatalı oynama yapılmış olur	
 				else
 				{
-					*q = 1;
+					*q = 0;
 					break;
 				}	 
 			}
-			// Piyonlar 1 birim ileri oynat�l�rsa 
+			// Piyonlar 1 birim ileri oynatılırsa 
 			else
 			{
-				// Piyonun �n� bo�sa d�ng�den ��k�l�r oyun devam eder
+				// Piyonun önü boşsa döngüden çıkılır oyun devam eder
 				if(tahta[*y2-1][*x2-1] == '#')
 				{
 					gecerkenAl= 0; 
-					*q = 0;
+					*q = 1;
 					break;
 				}
-				// Piyonun �n�nde herhangi bir ta� varsa hata al�n�r
+				// Piyonun önünde herhangi bir taş varsa hata alınır
 				else
 				{
-					*q = 1;
+					*q = 0;
 					break;
 				}	
 			}					
@@ -446,31 +987,7 @@ void K(char tahta[][8], int *x, int *y, int *x2, int *y2, int *q)
 	int i, j;
 	while(1)
 	{		
-		//Tahtada bulunmayan bir konum se�ilirse veilecek hata(ta��n se�ildi�i konum)
-		if((*x<1 || *x>8) || (*y<1 || *y>8))
-		{
-			*q = 1;
-			break;
-		}
-		//Tahtada bulunmayan bir konum se�ilirse veilecek hata(ta��n gidece�i konum)
-		if((*x2<1 || *x2>8) || (*y2<1 || *y2>8))
-		{
-			*q = 1;
-			break;
-		}
-		//Tahtadaki bo� bir karakteri se�ti�inde verilecek hata
-		else if(tahta[*y-1][*x-1] == '#')
-		{
-			*q = 1;
-			break;
-		}		
-		//Rakip tak�m�n ta�lar� se�ilirse verilecek hata		
-		else if(tahta[*y-1][*x-1] == 'p' || tahta[*y-1][*x-1] == 'k' || tahta[*y-1][*x-1] == 'a' || tahta[*y-1][*x-1] == 'f' || tahta[*y-1][*x-1] == 'v' || tahta[*y-1][*x-1] == 's')
-		{
-			*q = 1;
-			break;
-		}
-		// Kale ayn� s�tunda istenildi�i kadar ileri gidebilir
+		// Kale aynı sütunda istenildiği kadar ileri gidebilir
 		if(*x2 == *x && *y2 != *y)
 		{
 			// Kale ileri oynarsa
@@ -478,26 +995,26 @@ void K(char tahta[][8], int *x, int *y, int *x2, int *y2, int *q)
 			{
 				for(i=*y-1-1; i>*y2-1; i--)
 				{	
-					//  Kalenin �n�nde ta� versa *q = 1 atamas� yap�l�r (ana fonksiyonda q = 1 ise hata al�nacakt�r)
+					//  Kalenin önünde taş versa *q = 1 ataması yapılır (ana fonksiyonda q = 1 ise hata alınacaktır)
 					if(tahta[i][*x-1] != '#')
 					{
-						*q = 1;
+						*q = 0;
 						break;
 					}
 				}
-				// *q = 1 ise while d�ng�s�nden ve dolay�s�yla 'K' fonksiyonundan ��k�l�r
-				if(*q == 1)
+				// *q = 0 ise while döngüsünden ve dolayısıyla 'K' fonksiyonundan çıkılır
+				if(*q == 0)
 					break;
-				// Kalenin �n� bo�sa ve gitmek istedi�i yer bo� veya rakibin herhangi bir ta�� varsa  q = 0 (ana fonksiyonda hata al�nmayaca�� anlam�na gelecek) kale oraya gidebilir
+				// Kalenin önü boşsa ve gitmek istediği yer boş veya rakibin herhangi bir taşı varsa  q = 0 (ana fonksiyonda hata alınmayacağı anlamına gelecek) kale oraya gidebilir
 				if(tahta[*y2-1][*x2-1] == 'p' || tahta[*y2-1][*x2-1] == 'k' || tahta[*y2-1][*x2-1] == 'a' || tahta[*y2-1][*x2-1] == 'f' || tahta[*y2-1][*x2-1] == 'v' || tahta[*y2-1][*x2-1] == '#')
 				{
-					*q = 0;
+					*q = 1;
 					break;
 				}
-				// Kalenin �n� bo�sa ve gitmek istedi�i konumda kendi ta�lar�ndan herhangi biri varsa hatal� se�im olacakt�r
+				// Kalenin önü boşsa ve gitmek istediği konumda kendi taşlarından herhangi biri varsa hatalı seçim olacaktır
 				else
 				{
-					*q = 1;
+					*q = 0;
 					break;
 				}
 			}
@@ -506,57 +1023,57 @@ void K(char tahta[][8], int *x, int *y, int *x2, int *y2, int *q)
 			{
 				for(i=*y-1+1; i<*y2-1; i++)
 				{
-					//  Kalenin �n�nde ta� versa *q = 1 atamas� yap�l�r (ana fonksiyonda q = 1 ise hata al�nacakt�r)
+					//  Kalenin önünde taş versa *q = 1 ataması yapılır (ana fonksiyonda q = 1 ise hata alınacaktır)
 					if(tahta[i][*x-1] != '#')
 					{
-						*q = 1;
+						*q = 0;
 						break;
 					}
 				}
-				// *q = 1 ise while d�ng�s�nden ve dolay�s�yla 'k' fonksiyonundan ��k�l�r
-				if(*q == 1)
+				// *q = 0 ise while döngüsünden ve dolayısıyla 'k' fonksiyonundan çıkılır
+				if(*q == 0)
 					break;
-				// Kalenin �n� bo�sa ve gitmek istedi�i yer bo� veya rakibin herhangi bir ta�� varsa  q = 0 (ana fonksiyonda hata al�nmayaca�� anlam�na gelecek) kale oraya gidebilir	
+				// Kalenin önü boşsa ve gitmek istediği yer boş veya rakibin herhangi bir taşı varsa  q = 0 (ana fonksiyonda hata alınmayacağı anlamına gelecek) kale oraya gidebilir	
 				if(tahta[*y2-1][*x2-1] == 'p' || tahta[*y2-1][*x2-1] == 'k' || tahta[*y2-1][*x2-1] == 'a' || tahta[*y2-1][*x2-1] == 'f' || tahta[*y2-1][*x2-1] == 'v' || tahta[*y2-1][*x2-1] == '#')
 				{
-					*q = 0;
+					*q = 1;
 					break;
 				}
-				// Kalenin �n� bo�sa ve gitmek istedi�i konumda kendi ta�lar�ndan herhangi biri varsa hatal� se�im olacakt�r
+				// Kalenin önü boşsa ve gitmek istediği konumda kendi taşlarından herhangi biri varsa hatalı seçim olacaktır
 				else
 				{
-					*q = 1;
+					*q = 0;
 					break;
 				}
 			}				
 		}
 		else if(*y2 == *y && *x2 != *x)
 		{	
-			// Kale sa�a oynarsa
+			// Kale sağa oynarsa
 			if(*x2>*x)
 			{	
 				for(i=*x-1+1; i<*x2-1; i++)
 				{	
-					//  Kalenin �n�nde ta� versa *q = 1 atamas� yap�l�r (ana fonksiyonda q = 1 ise hata al�nacakt�r)
+					//  Kalenin önünde taş versa *q = 0 ataması yapılır (ana fonksiyonda q = 1 ise hata alınacaktır)
 					if(tahta[*y-1][i] != '#')
 					{
-						*q = 1;
+						*q = 0;
 						break;
 					}
 				}
-				// *q = 1 ise while d�ng�s�nden ve dolay�s�yla 'k' fonksiyonundan ��k�l�r
-				if(*q == 1)
+				// *q = 0 ise while döngüsünden ve dolayısıyla 'k' fonksiyonundan çıkılır
+				if(*q == 0)
 					break;
-				// Kalenin �n� bo�sa ve gitmek istedi�i yer bo� veya rakibin herhangi bir ta�� varsa  q = 0 (ana fonksiyonda hata al�nmayaca�� anlam�na gelecek) kale oraya gidebilir
+				// Kalenin önü boşsa ve gitmek istediği yer boş veya rakibin herhangi bir taşı varsa  q = 0 (ana fonksiyonda hata alınmayacağı anlamına gelecek) kale oraya gidebilir
 				if(tahta[*y2-1][*x2-1] == 'p' || tahta[*y2-1][*x2-1] == 'k' || tahta[*y2-1][*x2-1] == 'a' || tahta[*y2-1][*x2-1] == 'f' || tahta[*y2-1][*x2-1] == 'v' || tahta[*y2-1][*x2-1] == '#')
 				{
-					*q = 0;
+					*q = 1;
 					break;
 				}
-				// Kalenin �n� bo�sa ve gitmek istedi�i konumda kendi ta�lar�ndan herhangi biri varsa hatal� se�im olacakt�r
+				// Kalenin önü boşsa ve gitmek istediği konumda kendi taşlarından herhangi biri varsa hatalı seçim olacaktır
 				else
 				{
-					*q = 1;
+					*q = 0;
 					break;
 				}
 			}
@@ -565,29 +1082,642 @@ void K(char tahta[][8], int *x, int *y, int *x2, int *y2, int *q)
 			{
 				for(i=*x2-1-1; i>*x-1; i--)
 				{
-					//  Kalenin �n�nde ta� versa *q = 1 atamas� yap�l�r (ana fonksiyonda q = 1 ise hata al�nacakt�r)
+					//  Kalenin önünde taş versa *q = 0 ataması yapılır (ana fonksiyonda q = 1 ise hata alınacaktır)
 					if(tahta[*y-1][i] != '#')
 					{
-						*q = 1;
+						*q = 0;
 						break;
 					}
 				}
-				// *q = 1 ise while d�ng�s�nden ve dolay�s�yla 'k' fonksiyonundan ��k�l�r
-				if(*q == 1)
+				// *q = 0 ise while döngüsünden ve dolayısıyla 'k' fonksiyonundan çıkılır
+				if(*q == 0)
 					break;
-				// Kalenin �n� bo�sa ve gitmek istedi�i yer bo� veya rakibin herhangi bir ta�� varsa  q = 0 (ana fonksiyonda hata al�nmayaca�� anlam�na gelecek) kale oraya gidebilir	
+				// Kalenin önü boşsa ve gitmek istediği yer boş veya rakibin herhangi bir taşı varsa  q = 0 (ana fonksiyonda hata alınmayacağı anlamına gelecek) kale oraya gidebilir	
 				if(tahta[*y2-1][*x2-1] == 'p' || tahta[*y2-1][*x2-1] == 'k' || tahta[*y2-1][*x2-1] == 'a' || tahta[*y2-1][*x2-1] == 'f' || tahta[*y2-1][*x2-1] == 'v' || tahta[*y2-1][*x2-1] == '#')
-				{
-					*q = 0;
-					break;
-				}
-				// Kalenin �n� bo�sa ve gitmek istedi�i konumda kendi ta�lar�ndan herhangi biri varsa hatal� se�im olacakt�r
-				else
 				{
 					*q = 1;
 					break;
 				}
+				// Kalenin önü boşsa ve gitmek istediği konumda kendi taşlarından herhangi biri varsa hatalı seçim olacaktır
+				else
+				{
+					*q = 0;
+					break;
+				}
 			}				
+		}
+		// Kale düz hareket ettirilmezse
+		else
+		{
+			*q = 0;
+			break;
+		}
+	}
+}
+// Oyuncu2 atı
+void A(char tahta[][8], int *x, int *y, int *x2, int *y2, int *q)
+{
+	while(1)
+	{
+		// At 2 birim ileri veya geri haraket ederse
+		if(*y2-*y == 2 || *y2-*y == -2)
+		{
+			// 1 birim sağa veya sola giderse hata yok
+			if(*x2-*x == 1 || *x2-*x == -1)
+			{
+				// Atın gideceği konumda kendi taşları yoksa hata alınmaz
+				if(tahta[*y2-1][*y2-1] == '#' || tahta[*y2-1][*x2-1] == 'p' || tahta[*y2-1][*x2-1] == 'k' || tahta[*y2-1][*x2-1] == 'a' || tahta[*y2-1][*x2-1] == 'f' || tahta[*y2-1][*x2-1] == 'v')
+				{
+					*q = 1; 
+					break;
+				}
+				// Aksi durumlarda hata alınır
+				else
+				{
+					*q = 0;
+					break;
+				}
+			} // 1 birim dışında bir oynama olursa hata alınır
+			else
+			{
+				*q = 0;
+				break;
+			}
+		}
+		// At 2 birim sağa veya sola giderse
+		else if(*x2-*x == 2 || *x2-*x == -2)
+		{
+			// 1 birim aşağı veya yukarı gitmeli
+			if(*y2-*y == 1 || *y2-*y == -1)
+			{
+				// Gideceği konumda kendi taşları yoks hata alınmaz
+				if(tahta[*y2-1][*y2-1] == '#' || tahta[*y2-1][*x2-1] == 'p' || tahta[*y2-1][*x2-1] == 'k' || tahta[*y2-1][*x2-1] == 'a' || tahta[*y2-1][*x2-1] == 'f' || tahta[*y2-1][*x2-1] == 'v')
+				{
+					*q = 1; 
+					break;
+				}
+				// Aksi durumlarda hata alınır
+				else
+				{
+					*q = 0;
+					break;
+				}
+			}
+			else
+			{
+				*q = 0;
+				break;
+			}
+		}
+		else
+			{
+				*q = 0;
+				break;
+			}
+	}
+}
+void F(char tahta[][8], int *x, int *y, int *x2, int *y2, int *q)
+{
+	int kontrol = 0, i;
+	while(1)
+	{
+		// Fil aşağı hareket ederse
+		if(*y2-*y>0)
+		{
+			kontrol = 0;
+			// Fil aşağı kaç birim gittiyse sağa o kadar gitmeli
+			if(*x2-*x == *y2-*y)
+			{
+				// Filin önünde taş varsa
+				for(i=0; i<*y2-*y-1; i++)
+				{
+					if(tahta[*y+i][*x+i] != '#')
+						kontrol++;					
+				}
+				if(kontrol>0)
+				{
+					*q = 0;
+					break;
+				}
+				else
+				{	// Gidilen konumda kendi taşları yoksa
+					if(tahta[*y2-1][*x2-1] != 'P' || tahta[*y2-1][*x2-1] != 'K' || tahta[*y2-1][*x2-1] != 'A' || tahta[*y2-1][*x2-1] != 'F' || tahta[*y2-1][*x2-1] != 'V' || tahta[*y2-1][*x2-1] != 'S')
+					{
+						*q = 1; 
+						break;
+					}
+					else
+					{
+						*q = 0;
+						break;
+					}
+				}				
+			}
+			// Fil aşağı kaç birim gittiyse sola o kadar gitmeli
+			else if(*x2-*x == *y-*y2)
+			{
+				// Filin önünde taş varsa
+				for(i=0; i<*y2-*y-1; i++)
+				{
+					if(tahta[*y+i][*x-2-i] != '#')
+						kontrol++;					
+				}
+				if(kontrol>0)
+				{
+					*q = 0;
+					break;
+				}
+				else
+				{	// Gidilen konumda kendi taşları yoksa
+					if(tahta[*y2-1][*x2-1] != 'P' || tahta[*y2-1][*x2-1] != 'K' || tahta[*y2-1][*x2-1] != 'A' || tahta[*y2-1][*x2-1] != 'F' || tahta[*y2-1][*x2-1] != 'V' || tahta[*y2-1][*x2-1] != 'S')
+					{
+						*q = 1; 
+						break;
+					}
+					else
+					{
+						*q = 0;
+						break;
+					}
+				}
+			}
+			else
+			{
+				*q = 0;
+				break;
+			}
+		}
+		// Fil yukarı hareket ederse
+		if(*y2-*y<0)
+		{
+			kontrol = 0;
+			// Fil yukarı kaç birim gittiyse sağa o kadar gitmeli
+			if(*x2-*x == *y-*y2)
+			{
+				// Filin önünde taş varsa
+				for(i=0; i<*y2-*y-1; i++)
+				{
+					if(tahta[*y-2-i][*x+i] != '#')
+						kontrol++;					
+				}
+				if(kontrol>0)
+				{
+					*q = 0;
+					break;
+				}
+				else
+				{	// Gidilen konumda kendi taşları yoksa
+					if(tahta[*y2-1][*x2-1] != 'P' || tahta[*y2-1][*x2-1] != 'K' || tahta[*y2-1][*x2-1] != 'A' || tahta[*y2-1][*x2-1] != 'F' || tahta[*y2-1][*x2-1] != 'V' || tahta[*y2-1][*x2-1] != 'S')
+					{
+						*q = 1; 
+						break;
+					}
+					else
+					{
+						*q = 0;
+						break;
+					}
+				}				
+			}
+			// Fil yukarı kaç birim gittiyse sola o kadar gitmeli
+			else if(*x2-*x == *y2-*y)
+			{
+				// Filin önünde taş varsa
+				for(i=0; i<*y2-*y-1; i++)
+				{ 
+					if(tahta[*y-2-i][*x-2-i] != '#')
+						kontrol++;					
+				}
+				if(kontrol>0)
+				{
+					*q = 0;
+					break;
+				}
+				else
+				{	// Gidilen konumda kendi taşları yoksa
+					if(tahta[*y2-1][*x2-1] != 'P' || tahta[*y2-1][*x2-1] != 'K' || tahta[*y2-1][*x2-1] != 'A' || tahta[*y2-1][*x2-1] != 'F' || tahta[*y2-1][*x2-1] != 'V' || tahta[*y2-1][*x2-1] != 'S')
+					{
+						*q = 1; 
+						break;
+					}
+					else
+					{
+						*q = 0;
+						break;
+					}
+				}
+			}
+			else
+			{
+				*q = 0;
+				break;
+			}
+		}
+	}
+}
+// Oyuncu2 veziri
+// Vezir, kale ve filin yapatığı her şeyi yapabilir
+void V(char tahta[][8], int *x, int *y, int *x2, int *y2, int *q)
+{
+	int i, j, kontrol;
+	while(1)
+	{		
+		// Kale aynı sütunda istenildiği kadar ileri gidebilir
+		if(*x2 == *x && *y2 != *y)
+		{
+			// Kale ileri oynarsa
+			if(*y>*y2)
+			{
+				for(i=*y-1-1; i>*y2-1; i--)
+				{	
+					//  Kalenin önünde taş versa *q = 0 ataması yapılır (ana fonksiyonda q = 0 ise hata alınacaktır)
+					if(tahta[i][*x-1] != '#')
+					{
+						*q = 0;
+						break;
+					}
+				}
+				// *q = 0 ise while döngüsünden ve dolayısıyla 'K' fonksiyonundan çıkılır
+				if(*q == 0)
+					break;
+				// Kalenin önü boşsa ve gitmek istediği yer boş veya rakibin herhangi bir taşı varsa  q = 1 (ana fonksiyonda hata alınmayacağı anlamına gelecek) kale oraya gidebilir
+				if(tahta[*y2-1][*x2-1] == 'p' || tahta[*y2-1][*x2-1] == 'k' || tahta[*y2-1][*x2-1] == 'a' || tahta[*y2-1][*x2-1] == 'f' || tahta[*y2-1][*x2-1] == 'v' || tahta[*y2-1][*x2-1] == '#')
+				{
+					*q = 1;
+					break;
+				}
+				// Kalenin önü boşsa ve gitmek istediği konumda kendi taşlarından herhangi biri varsa hatalı seçim olacaktır
+				else
+				{
+					*q = 0;
+					break;
+				}
+			}
+			// Kale geri oynarsa
+			else if(*y<*y2)
+			{
+				for(i=*y-1+1; i<*y2-1; i++)
+				{
+					//  Kalenin önünde taş versa *q = 0 ataması yapılır (ana fonksiyonda q = 0 ise hata alınacaktır)
+					if(tahta[i][*x-1] != '#')
+					{
+						*q = 0;
+						break;
+					}
+				}
+				// *q = 0 ise while döngüsünden ve dolayısıyla 'k' fonksiyonundan çıkılır
+				if(*q == 0)
+					break;
+				// Kalenin önü boşsa ve gitmek istediği yer boş veya rakibin herhangi bir taşı varsa  q = 1 (ana fonksiyonda hata alınmayacağı anlamına gelecek) kale oraya gidebilir	
+				if(tahta[*y2-1][*x2-1] == 'p' || tahta[*y2-1][*x2-1] == 'k' || tahta[*y2-1][*x2-1] == 'a' || tahta[*y2-1][*x2-1] == 'f' || tahta[*y2-1][*x2-1] == 'v' || tahta[*y2-1][*x2-1] == '#')
+				{
+					*q = 1;
+					break;
+				}
+				// Kalenin önü boşsa ve gitmek istediği konumda kendi taşlarından herhangi biri varsa hatalı seçim olacaktır
+				else
+				{
+					*q = 0;
+					break;
+				}
+			}				
+		}
+		else if(*y2 == *y && *x2 != *x)
+		{	
+			// Kale sağa oynarsa
+			if(*x2>*x)
+			{	
+				for(i=*x-1+1; i<*x2-1; i++)
+				{	
+					//  Kalenin önünde taş versa *q = 0 ataması yapılır (ana fonksiyonda q = 0 ise hata alınacaktır)
+					if(tahta[*y-1][i] != '#')
+					{
+						*q = 0;
+						break;
+					}
+				}
+				// *q = 0 ise while döngüsünden ve dolayısıyla 'k' fonksiyonundan çıkılır
+				if(*q == 0)
+					break;
+				// Kalenin önü boşsa ve gitmek istediği yer boş veya rakibin herhangi bir taşı varsa  q = 1 (ana fonksiyonda hata alınmayacağı anlamına gelecek) kale oraya gidebilir
+				if(tahta[*y2-1][*x2-1] == 'p' || tahta[*y2-1][*x2-1] == 'k' || tahta[*y2-1][*x2-1] == 'a' || tahta[*y2-1][*x2-1] == 'f' || tahta[*y2-1][*x2-1] == 'v' || tahta[*y2-1][*x2-1] == '#')
+				{
+					*q = 1;
+					break;
+				}
+				// Kalenin önü boşsa ve gitmek istediği konumda kendi taşlarından herhangi biri varsa hatalı seçim olacaktır
+				else
+				{
+					*q = 0;
+					break;
+				}
+			}
+			// Kale sola oynarsa
+			else if(*x2<*x)
+			{
+				for(i=*x2-1-1; i>*x-1; i--)
+				{
+					//  Kalenin önünde taş versa *q = 1 ataması yapılır (ana fonksiyonda q = 1 ise hata alınacaktır)
+					if(tahta[*y-1][i] != '#')
+					{
+						*q = 0;
+						break;
+					}
+				}
+				// *q = 0 ise while döngüsünden ve dolayısıyla 'k' fonksiyonundan çıkılır
+				if(*q == 0)
+					break;
+				// Kalenin önü boşsa ve gitmek istediği yer boş veya rakibin herhangi bir taşı varsa  q = 0 (ana fonksiyonda hata alınmayacağı anlamına gelecek) kale oraya gidebilir	
+				if(tahta[*y2-1][*x2-1] == 'p' || tahta[*y2-1][*x2-1] == 'k' || tahta[*y2-1][*x2-1] == 'a' || tahta[*y2-1][*x2-1] == 'f' || tahta[*y2-1][*x2-1] == 'v' || tahta[*y2-1][*x2-1] == '#')
+				{
+					*q = 1;
+					break;
+				}
+				// Kalenin önü boşsa ve gitmek istediği konumda kendi taşlarından herhangi biri varsa hatalı seçim olacaktır
+				else
+				{
+					*q = 0;
+					break;
+				}
+			}				
+		}
+		// Fil aşağı hareket ederse
+		if(*y2-*y>0)
+		{
+			kontrol = 0;
+			// Fil aşağı kaç birim gittiyse sağa o kadar gitmeli
+			if(*x2-*x == *y2-*y)
+			{
+				// Filin önünde taş varsa
+				for(i=0; i<*y2-*y-1; i++)
+				{
+					if(tahta[*y+i][*x+i] != '#')
+						kontrol++;					
+				}
+				if(kontrol>0)
+				{
+					*q = 0;
+					break;
+				}
+				else
+				{	// Gidilen konumda kendi taşları yoksa
+					if(tahta[*y2-1][*x2-1] != 'P' || tahta[*y2-1][*x2-1] != 'K' || tahta[*y2-1][*x2-1] != 'A' || tahta[*y2-1][*x2-1] != 'F' || tahta[*y2-1][*x2-1] != 'V' || tahta[*y2-1][*x2-1] != 'S')
+					{
+						*q = 1; 
+						break;
+					}
+					else
+					{
+						*q = 0;
+						break;
+					}
+				}				
+			}
+			// Fil aşağı kaç birim gittiyse sola o kadar gitmeli
+			else if(*x2-*x == *y-*y2)
+			{
+				// Filin önünde taş varsa
+				for(i=0; i<*y2-*y-1; i++)
+				{
+					if(tahta[*y+i][*x-2-i] != '#')
+						kontrol++;					
+				}
+				if(kontrol>0)
+				{
+					*q = 0;
+					break;
+				}
+				else
+				{	// Gidilen konumda kendi taşları yoksa
+					if(tahta[*y2-1][*x2-1] != 'P' || tahta[*y2-1][*x2-1] != 'K' || tahta[*y2-1][*x2-1] != 'A' || tahta[*y2-1][*x2-1] != 'F' || tahta[*y2-1][*x2-1] != 'V' || tahta[*y2-1][*x2-1] != 'S')
+					{
+						*q = 1; 
+						break;
+					}
+					else
+					{
+						*q = 0;
+						break;
+					}
+				}
+			}
+			else
+			{
+				*q = 0;
+				break;
+			}
+		}
+		// Fil yukarı hareket ederse
+		if(*y2-*y<0)
+		{
+			kontrol = 0;
+			// Fil yukarı kaç birim gittiyse sağa o kadar gitmeli
+			if(*x2-*x == *y-*y2)
+			{
+				// Filin önünde taş varsa
+				for(i=0; i<*y2-*y-1; i++)
+				{
+					if(tahta[*y-2-i][*x+i] != '#')
+						kontrol++;					
+				}
+				if(kontrol>0)
+				{
+					*q = 0;
+					break;
+				}
+				else
+				{	// Gidilen konumda kendi taşları yoksa
+					if(tahta[*y2-1][*x2-1] != 'P' || tahta[*y2-1][*x2-1] != 'K' || tahta[*y2-1][*x2-1] != 'A' || tahta[*y2-1][*x2-1] != 'F' || tahta[*y2-1][*x2-1] != 'V' || tahta[*y2-1][*x2-1] != 'S')
+					{
+						*q = 1; 
+						break;
+					}
+					else
+					{
+						*q = 0;
+						break;
+					}
+				}				
+			}
+			// Fil yukarı kaç birim gittiyse sola o kadar gitmeli
+			else if(*x2-*x == *y2-*y)
+			{
+				// Filin önünde taş varsa
+				for(i=0; i<*y2-*y-1; i++)
+				{ 
+					if(tahta[*y-2-i][*x-2-i] != '#')
+						kontrol++;					
+				}
+				if(kontrol>0)
+				{
+					*q = 0;
+					break;
+				}
+				else
+				{	// Gidilen konumda kendi taşları yoksa
+					if(tahta[*y2-1][*x2-1] != 'P' || tahta[*y2-1][*x2-1] != 'K' || tahta[*y2-1][*x2-1] != 'A' || tahta[*y2-1][*x2-1] != 'F' || tahta[*y2-1][*x2-1] != 'V' || tahta[*y2-1][*x2-1] != 'S')
+					{
+						*q = 1; 
+						break;
+					}
+					else
+					{
+						*q = 0;
+						break;
+					}
+				}
+			}
+			else
+			{
+				*q = 0;
+				break;
+			}
+		}
+	}
+}
+// Oyuncu1 şahı
+void S(char tahta[][8], int *x, int *y, int *x2, int *y2, int *q)
+{
+	int i, j;
+	*q = 3; // *q değerini değiştirmeden rakibin kale fonksiyonu çağrıldığında hata aldığım için *q değerine boş bir değer atadım
+	for(i=1; i<9; i++)
+	{
+		for(j=1; j<9; j++)
+		{
+			if(tahta[i-1][j-1] == 'k')
+			{
+				K(tahta, &j, &i, x2, y2, q);
+			}
+			else if(tahta[i-1][j-1] == 'a')
+			{
+				A(tahta, &j, &i, x2, y2, q);
+			}
+			else if(tahta[i-1][j-1] == 'f')
+			{
+				F(tahta, &j, &i, x2, y2, q);
+			}
+			else if(tahta[i-1][j-1] == 'v')
+			{
+				V(tahta, &j, &i, x2, y2, q);
+			}
+				if(*q == 1)
+				{
+					*q = 2;
+					break;
+				}
+			// Rakip takımın şahının 1 birim yakınına oynatmaya çalışılabilir. Bunun için tüm şartlar aşağıda yazıldı
+			else if(tahta[i-1][j-1] == 's')
+			{
+				// Şahını rakip takımın şahının 1 sağına/soluna oynatmaya çalıştığında hata alınacak
+				if((i-1 == *y2-1) && (j-1 == *x2-2)) 
+				{
+					*q = 4;
+					break;
+				}
+				// Şahını rakip takımın şahının 1 sağına/soluna oynatmaya çalıştığında hata alınacak
+				else if((i-1 == *y2-1) && (j-1 == *x2)) 
+				{
+					*q = 4;
+					break;
+				}
+				// Şahını rakip takımın şahının 1 önüne/arkasına oynatmaya çalıştığında hata alınacak
+				else if((i-1 == *y2-2) && (j-1 == *x2-1)) 
+				{
+					*q = 4;
+					break;
+				}
+				// Şahını rakip takımın şahının 1 birim önüne/arkasına oynatmaya çalıştığında hata alınacak
+				else if((i-1 == *y2) && (j-1 == *x2-2)) 
+				{
+					*q = 4;
+					break;
+				}
+				// Rakibin şahının 1 birim çaprazına oynanmak istendiğinde hata alınır
+				else if((i-1 == *y2-2) && (j-1 == *x2)) 
+				{
+					*q = 4;
+					break;
+				}
+				// Rakibin şahının 1 birim çaprazına oynanmak istendiğinde hata alınır
+				else if((i-1 == *y2) && (j-1 == *x2-2)) 
+				{
+					*q = 4;
+					break;
+				}
+				// Rakibin şahının 1 birim çaprazına oynanmak istendiğinde hata alınır
+				else if((i-1 == *y2-2) && (j-1 == *x2-2)) 
+				{
+					*q = 4;
+					break;
+				}
+				// Rakibin şahının 1 birim çaprazına oynanmak istendiğinde hata alınır
+				else if((i-1 == *y2-2) && (j-1 == *x2-2)) 
+				{
+					*q = 4;
+					break;
+				}
+			}
+		}
+		if(*q == 2 || *q == 4)
+		{
+			printf("asma = %d\n", *q);
+			break;	
+		}
+	}
+	while(1)
+	{
+		if(*q == 2 || *q == 4)
+		{
+			*q = 0; 
+			break;	
+		} 
+			
+		// Şah ileri oynarsa
+		if(*y2-*y == 1)
+		{
+			if(*x2-*x == 0 || *x2-*x == 1 || *x2-*x == -1) 
+			{
+				*q = 1;
+				break;
+			}
+			else
+			{
+				*q = 0;
+				break;
+			}
+		}
+		// Şah geri oynarsa
+		else if(*y2-*y == -1)
+		{
+			if(*x2-*x == 0 || *x2-*x == 1 || *x2-*x == -1) 
+			{
+				*q = 1;
+				break;
+			}
+			else
+			{
+				*q = 0;
+				break;
+			}
+		}
+		// Şah y ekseninde hareket etmezse
+		else if(*y2-*y == 0)
+		{
+			if(*x2-*x == 1 || *x2-*x == -1) 
+			{
+				*q = 1;
+				break;
+			}
+			else
+			{
+				*q = 0;
+				break;
+			}
+		}
+		else
+		{
+			*q = 0;
+			break;
 		}
 	}
 }
@@ -595,9 +1725,9 @@ int main()
 {
 	char tahta[8][8], gecici;
 	int i, j, n=0, x, y, x2, y2;
-	int q; // foksiyona gidildikten sonra hatali se�im yap�l�rsa q de�eri if ko�ulu olarak kullan�lacak 
+	int q; // foksiyona gidildikten sonra hatali seçim yapılırsa q değeri if koşulu olarak kullanılacak 
 	
-	//Satranc tahtas�na ta�lar� yerle�tirme 
+	//Satranc tahtasına taşları yerleştirme 
 	for(i=0; i<8; i++)
 	{
 		for(j=0; j<8; j++)
@@ -627,11 +1757,12 @@ int main()
 	printf("Oyuncu bir kucuk karakterler senindir\n");
 	printf("Oyuncu iki buyuk karakterler senindir\n");
 	printf("Oyun basliyor...\n\n");
-	//Oyun ba�l�yor
+	//Oyun başlıyor
 	while(1)
 	{
-		q = 0;
-		//Satra� tahtas�n� yazd�rma
+		// Döngü her başladığında q = 1 olarak atanır ve alt satırlardan fonksiyonlara geçiş yapılarak o fonksiyonlarda istenmeyen durumlarda q değeri 0 yapılıp yine ana fonksiyon içinde bulunan bir if koşulunda q değeri kontrol edilip istenilen çıktı sağlanır(1586. satıra bak)  
+		q = 1;
+		//Satraç tahtasını yazdırma
 	for(i=0; i<8; i++)
 	printf("%4d", i+1);
 	printf("\n  ");
@@ -650,9 +1781,9 @@ int main()
 		n++;
 		printf("Oyuncu%d sende\n", n);
 		printf("Oynatacagin tasi sec\n");
-		scanf("%d%d", &x, &y); // x ve y oynat�lacak ta��n konumlar�n� tutuyor
+		scanf("%d%d", &x, &y); // x ve y oynatılacak taşın konumlarını tutuyor
 		
-		//Tahtadaki bo� bir karakteri se�ti�inde verilecek hata
+		//Tahtadaki boş bir karakteri seçtiğinde verilecek hata
 		if(tahta[y-1][x-1] == '#')
 		{
 			system("cls");
@@ -660,20 +1791,21 @@ int main()
 			n--;
 			continue;
 		}
-		//Tahtada bulunmayan bir konum se�ilirse veilecek hata
+		//Tahtada bulunmayan bir konum seçilirse veilecek hata
 		if((x<1 || x>8) || (y<1 || y>8))
 		{
-			printf("Hatali secim\n");
+			system("cls");
+			printf("Hatali secim\n\n");
 			n--;
 			continue;
 		}
-		//Rakip tak�m�n ta�lar� se�ilirse verilecek hata
+		//Rakip takımın taşları seçilirse verilecek hata
 		if(n == 1)
 		{
 			if(tahta[y-1][x-1] == 'P' || tahta[y-1][x-1] == 'K' || tahta[y-1][x-1] == 'A' || tahta[y-1][x-1] == 'F' || tahta[y-1][x-1] == 'V' || tahta[y-1][x-1] == 'S')
 			{
 				system("cls");
-				printf("Hatali secim\n");
+				printf("Hatali secim\n\n");
 				n = 0;
 				continue;
 			}
@@ -683,43 +1815,77 @@ int main()
 			if(tahta[y-1][x-1] == 'p' || tahta[y-1][x-1] == 'k' || tahta[y-1][x-1] == 'a' || tahta[y-1][x-1] == 'f' || tahta[y-1][x-1] == 'v' || tahta[y-1][x-1] == 's')
 			{
 				system("cls");
-				printf("Hatali secim\n");
+				printf("Hatali secim\n\n");
 				n = 1;
 				continue;
 			}
 		}		
 		printf("Nereye oynayacaksin\n");
-		scanf("%d%d", &x2, &y2); //  x2 ve y2 oynat�lacak yerin konumlar�n� tutuyor
+		scanf("%d%d", &x2, &y2); //  x2 ve y2 oynatılacak yerin konumlarını tutuyor
 		
-		//S�ra 1.oyuncudayken sadece onun fonksiyonlar�n� kontrol eder
+		// Oynanan konumda kendi taşları varsa alınacak hata(2.oyuncu için)
+		if(n == 2)
+		{
+			if(tahta[y2-1][x2-1] == 'P' || tahta[y2-1][x2-1] == 'K' || tahta[y2-1][x2-1] == 'A' || tahta[y2-1][x2-1] == 'F' || tahta[y2-1][x2-1] == 'V' || tahta[y2-1][x2-1] == 'S')
+			{
+				system("cls");
+				printf("Hatali secim\n\n");
+				n = 1;
+				continue;
+			}
+		}
+		// Oynanan konumda kendi taşları varsa alınacak hata(1.oyuncu için)		
+		else
+		{
+			if(tahta[y2-1][x2-1] == 'p' || tahta[y2-1][x2-1] == 'k' || tahta[y2-1][x2-1] == 'a' || tahta[y2-1][x2-1] == 'f' || tahta[y2-1][x2-1] == 'v' || tahta[y2-1][x2-1] == 's')
+			{
+				system("cls");
+				printf("Hatali secim\n");
+				n = 0;
+				continue;
+			}
+		}
+		//Sıra 1.oyuncudayken sadece onun fonksiyonlarını kontrol eder
 		if(n == 1)
 		{
 			if(tahta[y-1][x-1] == 'p')
 			p(tahta, &x, &y, &x2, &y2, &q);
 			if(tahta[y-1][x-1] == 'k')
 			k(tahta, &x, &y, &x2, &y2, &q);
+			if(tahta[y-1][x-1] == 'a')
+			a(tahta, &x, &y, &x2, &y2, &q);
 			if(tahta[y-1][x-1] == 'f')
 			f(tahta, &x, &y, &x2, &y2, &q);
+			if(tahta[y-1][x-1] == 'v')
+			v(tahta, &x, &y, &x2, &y2, &q);	
+			if(tahta[y-1][x-1] == 's')
+			s(tahta, &x, &y, &x2, &y2, &q);
 		}
-		//S�ra 2.oyuncudayken sadece onun fonksiyonlar�n� kontrol eder
+		//Sıra 2.oyuncudayken sadece onun fonksiyonlarını kontrol eder
 		else
 		{
 			if(tahta[y-1][x-1] == 'P')
 			P(tahta, &x, &y, &x2, &y2, &q);
 			if(tahta[y-1][x-1] == 'K')
 			K(tahta, &x, &y, &x2, &y2, &q);
+			if(tahta[y-1][x-1] == 'A')
+			A(tahta, &x, &y, &x2, &y2, &q);
 			if(tahta[y-1][x-1] == 'F')
 			F(tahta, &x, &y, &x2, &y2, &q);
+			if(tahta[y-1][x-1] == 'V')
+			V(tahta, &x, &y, &x2, &y2, &q);
+			if(tahta[y-1][x-1] == 'S')
+			S(tahta, &x, &y, &x2, &y2, &q);
 		}
-	//	printf("%d\n", q);
-		if(q == 1)
+		//Fonksiyonların içlerinde hatalı bir seçim yapıldığında q = 0 olarak döndürülüp ana fonksiyonda bu koşul içinde hata mesajı verdirilir
+		if(q == 0)
 		{
 			system("cls");
 			printf("Hatali secim!\n");	
 			n--;		
 			continue;			
 		}
-		//Se�ilen ta� istenilen yere oynat�l�yor
+		//Seçilen taş istenilen yere oynatılıyor
 		tahta[y2-1][x2-1] = tahta[y-1][x-1];
 		tahta[y-1][x-1] = '#';
 		
